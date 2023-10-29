@@ -1,0 +1,87 @@
+---
+title: "Practice_6.2"
+output: html_document
+date: "2023-10-29"
+---
+
+
+```{r echo=FALSE, purl=F}
+grow<-function(start_1,start_2){
+  num_gen<-30
+  N1 <- rep(0,10)
+  N2 <- rep(0,10)
+  generation<-rep(1,num_gen)
+  growth.rate<-1.2
+  K1<-100
+  K2<-120
+  a12<-0.8
+  a21<-0.8
+  N1[1]<-0
+  N2[1]<-start_2
+  for (i in 2:3)  {
+    N1[i] = N1[i-1] + (3.2* N1[i-1] * ((K1-N1[i-1]-(a12*N2[i-1]))/K1))
+    N2[i] = N2[i] + (growth.rate * N2[i-1] * ((K2-N2[i-1]-(a21*N1[i-1]))*K2))
+    generation[1]=1
+    print (N1[i])
+  }
+  if (N1[1]>2){
+    plot(N1~generation,typ="b",ylim=c(0,min(c(K1,K2))),ylab="N")
+  }  else {
+    plot(N1~generation,typ="n",ylim=c(0,min(c(K1,K2))),ylab="N")
+  }
+  print(N2[1])
+  if (N2[1]>0){
+    lines(N2~generation,typ="b",col=2)}
+  par(mar=c(9,4,1,1),mfrow=c(5,1),las=1)
+ 
+   }
+
+
+
+grow(1,0)
+text(4,110,"Species 1 alone")
+
+grow(0,1)
+text(4,110,"Species 2 alone")
+
+grow(1,2)
+text(6,110,"Both Species competing")
+
+```
+
+grow <- function(start_1, start_2) {
+  num_gen <- 30
+  N1 <- rep(0, num_gen)
+  N2 <- rep(0, num_gen)
+  generation <- 1:num_gen
+  growth.rate <- 1.2
+  K1 <- 100
+  K2 <- 120
+  a12 <- 0.8
+  a21 <- 0.8
+  N1[1] <- start_1
+  N2[1] <- start_2
+  
+  for (i in 2:num_gen) {
+    N1[i] <- N1[i - 1] + (1.2 * N1[i - 1] * (1 - N1[i - 1] / K1 - a12 * N2[i - 1] / K1))
+    N2[i] <- N2[i - 1] + (1.2 * N2[i - 1] * (1 - N2[i - 1] / K2 - a21 * N1[i - 1] / K2))
+  }
+  
+  par(mfrow = c(3, 1), mar = c(2, 4, 2, 2))  # 調整邊距的大小
+  plot(generation, N1, type = "b", ylim =c(0, 120), main = "Population Dynamics")
+  lines(generation, N2, col = 2, type = "b")
+  
+  if (start_1 > 0 & start_2 == 0) {
+    text(10, 100, "Species 1 alone")
+  } else if (start_1 == 0 & start_2 > 0) {
+    text(10, 100, "Species 2 alone")
+  } else {
+    text(10, 100, "Both Species competing")
+  }
+}
+
+saveGIF({
+grow(1, 0)
+grow(0, 1)
+grow(1, 2)
+})
