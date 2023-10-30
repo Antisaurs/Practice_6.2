@@ -4,8 +4,10 @@ output: html_document
 date: "2023-10-29"
 ---
 
+I guess you kept the code to be fixed below. As there arr no instructions in the .Rmd, I still tried to run it in case you did some changes. The code below does not work. In order to generate HTML, you have to deactivate code chunk using  'eval=F' 
 
-```{r echo=FALSE, purl=F}
+
+```{r echo=FALSE, eval=F, purl=F}
 grow<-function(start_1,start_2){
   num_gen<-30
   N1 <- rep(0,10)
@@ -49,6 +51,11 @@ text(6,110,"Both Species competing")
 
 ```
 
+The code below is working. I guess this is your solution. I added the packages library at the beginning as your code is not stand-alone without it:
+
+```{r echo=FALSE, purl=F}
+library (animation)
+
 grow <- function(start_1, start_2) {
   num_gen <- 30
   N1 <- rep(0, num_gen)
@@ -85,3 +92,7 @@ grow(1, 0)
 grow(0, 1)
 grow(1, 2)
 })
+
+```
+
+You need to close code chunk
